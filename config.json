@@ -1,0 +1,15 @@
+{
+  "params":
+  {
+    "local_server":"True",
+    "local_uri": "mysql://root:@localhost/flaskblog",
+    "prod_uri":"mysql://root:@localhost/codingthunder",
+    "fb_url":"https://facebook.com/codingthunder",
+    "tw_url":"https://twitter.com/codingthunder",
+    "gh_url": "https://github.com/codingthunder",
+    "blog_name": "Coding Thunder",
+    "tag_line": "Heaven for programmers",
+    "about_text": "Hi my name is harry and I create programming tutorials and I am a good boy",
+    "no_of_posts": 3
+  }
+}
