@@ -38,7 +38,7 @@
               on {{post.date}}</p>
           </div>
 
-          {{post.content[0:143]}}...
+          {{post.content[0:243]}}...
           <hr>
 </li></a>
           {% endfor %}
@@ -46,7 +46,8 @@
 
           <!-- Pager -->
           <div class="clearfix">
-            <a class="btn btn-primary float-right" href="#">Older Posts →</a>
+            <a class="btn btn-success rounded float-left" href="{{prev}}"> &larr;Previous</a>
+            <a class="btn btn-success rounded float-right" href="{{next}}">Next &rarr;</a>
           </div>
         </div>
       </div>
