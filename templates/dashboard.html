@@ -19,19 +19,11 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-          <h1>Basic Actions</h1>
+          
           
            <a href="/edit/0">  <button class="btn btn-success rounded"> Add a new post</button></a>
            
-<hr>
-          <h1>Upload A File</h1>
-          
-            <form action="/uploader" method="post" enctype="multipart/form-data">
-              
-<input type="file" name="file1">
-<button type="submit" class="btn btn-success rounded">Submit</button>
 
-            </form>
           <hr>
 <h1>Edit Posts</h1>
 <table class="table">
@@ -39,8 +31,8 @@
       <tr>
         <th>Sno</th>
         <th>Title</th>
-        <th>Date</th>
-        <th>Edit</th>
+        <th >Date</th>
+        <th >Edit</th>
         <th>Delete</th>
       </tr>
     </thead>
@@ -51,7 +43,7 @@
       <tr>
         <td>{{post.sno}}</td>
         <td>{{post.title}}</td>
-        <td>{{post.date}}</td>
+        <td class="width20">{{post.date}}</td>
         <td><a href="/edit/{{post.sno}}"><button class="btn btn-success rounded" >Edit</button></a></td>
         <td><a href="/delete/{{post.sno}}"><button class="btn btn-success rounded">Delete</button></a></td>
       </tr>

@@ -1,15 +1,16 @@
 {% extends "layout.html" %}
 {% block body %}
     <!-- Page Header -->
-    <header class="masthead mb-0" style="background-image: url('{{ url_for('static', filename='img/homepage.jpeg') }}')">
+    {% set fname = 'img/'+  image  %}
+    <header class="masthead mb-0" style="background-image: url('{{ url_for('static', filename=fname) }}')">
       <div class="overlay"></div>
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
             
             <div class="site-heading">
-              <h1>{{params['blog_name']}}</h1>
-              <span class="subheading "><strong>{{params['tag_line']}}</strong></span>
+              <h1>{{blogname}}</h1>
+              <span class="subheading">{{tagline}}</span>
             </div>
           </div>
         </div>
@@ -62,5 +63,4 @@
       </div>
     </div>
   </div>
-
     {% endblock %}

@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width-device-width, initial-scale=1.8">
 	<meta http-equiv="X-UA-Compatible" content="ie-edge">
 	<title>Sliding_login_page</title>
-	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/csssignin.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/csswork.css')}}">
 	<link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
@@ -19,39 +19,33 @@
 
 
 <div class="container" id="container">
+
+
 	<button class="close" onclick="window.location.href='/'"><i class="fa fa-times" aria-hidden="true"></i></button>
-
-	<!-- 
-////////////////////////////sign up form///////////////////////////// -->
 	<div class="form-container sign-up-container">
-		
-
 		<form action="/signup" method="post">
 			<h1>Create Account</h1>
 			
 			<input type="text" placeholder="Name" name="sname" />
-			<input type="text" placeholder="Email" name="semail" />
-			<input type="password" placeholder="Password" name="spass"/>
-			<button>Sign Up</button>
+			<input type="email" placeholder="Email" name="semail"/>
+			<input type="password" placeholder="Password" name="spass" />
+			<button name="sign_up">Sign Up</button>
 
 		</form>
 	</div>
-
-
-<!-- ///////////////////////////////login form//////////////////////////////
- -->	<div class="form-container sign-in-container">
+	<div class="form-container sign-in-container">
 		<form action="/dashboard" method="post">
 			<h1>Sign in</h1>
 			
-			<input type="text" placeholder="Email" name="uemail" />
+			<input type="text" placeholder="Email" name="uemail"/>
+
+		
 			<input type="password" placeholder="Password" name="pass"/>
-			<a href="#">Forgot your password?</a>
-			<button>Sign In</button>
+			
+			<button name='login' value="login">Sign In</button>
 			<p id="hiddensignup">New user? <a href="/signup">Sign Up</a> now</p>
 		</form>
 	</div>
-
-
 	<div class="overlay-container">
 		<div class="overlay">
 			<div class="overlay-panel overlay-left">
@@ -70,6 +64,8 @@
 
 
 <script type="text/javascript" src="{{url_for('static', filename='js/jswork.js')}}"></script>
+
+
 
 </body>
 </html>

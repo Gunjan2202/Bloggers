@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width-device-width, initial-scale=1.8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
 	<meta http-equiv="X-UA-Compatible" content="ie-edge">
 	<title>Sliding_login_page</title>
-	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/csssignin.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/csssignup2.css')}}">
 	<link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
@@ -33,6 +33,7 @@
 			<input type="text" placeholder="Email" name="semail" />
 			<input type="password" placeholder="Password" name="spass"/>
 			<button>Sign Up</button>
+			<p id="hiddensignin">Already have an account? <a href="/dashboard">Sign in here</a></p>
 
 		</form>
 	</div>

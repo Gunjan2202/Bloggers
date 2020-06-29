@@ -36,7 +36,7 @@ class Contacts(db.Model):
     name = db.Column(db.String(80), nullable=False)
     phone_num = db.Column(db.String(12), nullable=False)
     msg = db.Column(db.String(120), nullable=False)
-    date = db.Column(db.String(12), nullable=True)
+    date = db.Column(db.String(30), nullable=True)
     email = db.Column(db.String(20), nullable=False)
 
 
@@ -44,10 +44,13 @@ class Posts(db.Model):
     sno = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80), nullable=False)
     slug = db.Column(db.String(21), nullable=False)
-    content = db.Column(db.String(120), nullable=False)
+    content = db.Column(db.String(16000), nullable=False)
     tagline = db.Column(db.String(120), nullable=False)
-    date = db.Column(db.String(12), nullable=True)
+    date = db.Column(db.String(30), nullable=True)
+    category = db.Column(db.String(120), nullable=False)
     img_file = db.Column(db.String(12), nullable=True)
+    poster=db.Column(db.String(20),nullable=True)
+
 
 class Users(db.Model):
     sno = db.Column(db.Integer, primary_key=True)
@@ -92,6 +95,67 @@ def home():
 
     return render_template('index.html', params=params, posts=posts, prev=prev, next=next,var=var,url=url)
 
+@app.route("/<string:varstring>")
+def template(varstring):
+    posts = Posts.query.filter_by(category=varstring).all()
+    last = math.ceil(len(posts)/int(params['no_of_posts']))
+    #[0: params['no_of_posts']]
+    #posts = posts[]
+    page = request.args.get('page')
+    if(not str(page).isnumeric()):
+        page = 1
+    page= int(page)
+    posts = posts[(page-1)*int(params['no_of_posts']): (page-1)*int(params['no_of_posts'])+ int(params['no_of_posts'])]
+    #Pagination Logic
+    #First
+    if (page==1):
+        prev = "#"
+        next = "/?page="+ str(page+1)
+    elif(page==last):
+        prev = "/?page=" + str(page - 1)
+        next = "#"
+    else:
+        prev = "/?page=" + str(page - 1)
+        next = "/?page=" + str(page + 1)
+
+    if ('user' in session):
+        var = "logout"
+        url="logout"
+    
+    else:
+        var="login"
+        url="dashboard"
+    if(varstring=="education"):
+    	tag="Education is the key to success…"
+    	image="education.jpg"
+    	blogname="Education"
+
+    elif(varstring=="environment"):
+    	tag="A transition to clean energy is about making an investment in our future"
+    	image="earth.jpg"
+    	blogname="Environment"
+
+    elif(varstring=="health"):
+    	tag="Health is wealth"
+    	image="health3.jpg"
+    	blogname="Health"
+
+    elif(varstring=="technology"):
+    	tag="The future is here...."
+    	image="tech1.jpg"
+    	blogname="Technology"
+    elif(varstring=="other"):
+    	tag="other creative blogs"
+    	image="earth.jpg"
+    	blogname="Others"		
+
+    
+    
+
+    return render_template('template.html', blogname=blogname,tagline=tag, image=image, posts=posts, prev=prev, next=next,var=var,url=url)    
+
+
+
 
 
 @app.route("/post/<string:post_slug>", methods=['GET'])
@@ -115,19 +179,27 @@ def about():
 		url="dashboard"
 	return render_template('about.html', params=params,var=var,url=url)
 
-
 @app.route("/signup", methods=['GET', 'POST'])
-def signup():
-	if request.method=='POST':
-		semail = request.form.get('semail')
-		sname = request.form.get('sname')
-		spass = request.form.get('spass')
-		users = Users(email=semail, name=sname, password=spass)
-		db.session.add(users)
-		db.session.commit()
-		session['user'] = sname
-		posts = Posts.query.all()
-		return render_template('dashboard.html', params=params, posts = posts, sname=sname)
+def signup2():
+    if request.method=='GET':
+        return render_template('signup.html', params=params) 
+    elif request.method=='POST':
+    	semail = request.form.get('semail')
+    	sname = request.form.get('sname')
+    	spass = request.form.get('spass')
+    	users = Users(email=semail, name=sname, password=spass)
+    	db.session.add(users)
+    	db.session.commit()
+    	session['user'] = sname
+    	posts = Posts.query.filter_by(poster=session['user']).all()
+    	var = "logout"
+    	url="logout"
+    	return render_template('dashboard.html', params=params, posts = posts, sname=sname,var=var,url=url)  
+    else:
+    	return "ok"
+
+
+	
 @app.route("/dashboard", methods=['GET', 'POST'])
 def dashboard():
 	if request.method=='POST':
@@ -140,20 +212,20 @@ def dashboard():
 			#set the session variable
 			username=db.name
 			session['user'] = username
-			posts = Posts.query.all()
+			posts = Posts.query.filter_by(poster=session['user']).all()
 			var = "logout"
 			url="logout"
 			return render_template('dashboard.html', params=params, posts = posts, sname=username,var=var,url=url)
 		else:
 			return "wrong"
 	if ('user' in session):
-		posts = Posts.query.all()
+		posts = Posts.query.filter_by(poster=session['user']).all()
 		username=session['user']
 		var = "logout"
 		url="logout"
 		return render_template('dashboard.html', params=params, posts = posts,sname=username,var=var,url=url)		
 
-	return render_template('loginnew.html', params=params)    
+	return render_template('loginnew2.html', params=params)    
 
 @app.route("/edit/<string:sno>", methods = ['GET', 'POST'])
 def edit(sno):
@@ -163,11 +235,14 @@ def edit(sno):
             tline = request.form.get('tline')
             slug = request.form.get('slug')
             content = request.form.get('content')
-            img_file = request.form.get('img_file')
+            img_file = request.files.get('img_file')
+            img_file.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(img_file.filename) ))
             date = datetime.now()
+            category=request.form.get('category')
+            poster=session['user']
 
             if sno=='0':
-                post = Posts(title=box_title, slug=slug, content=content, tagline=tline, img_file=img_file, date=date)
+                post = Posts(title=box_title, slug=slug, content=content, tagline=tline, img_file=secure_filename(img_file.filename), date=date, category=category,poster=poster)
                 db.session.add(post)
                 db.session.commit()
             else:
@@ -176,10 +251,11 @@ def edit(sno):
                 post.slug = slug
                 post.content = content
                 post.tagline = tline
-                post.img_file = img_file
+                post.img_file = secure_filename(img_file.filename)
                 post.date = date
+                post.category=category
                 db.session.commit()
-                return redirect('/edit/'+sno)
+                return redirect('/dashboard')
         post = Posts.query.filter_by(sno=sno).first()
         var = "logout"
         url="logout"
@@ -196,13 +272,13 @@ def delete(sno):
         url="logout"
     return redirect('/dashboard',var=var,url=url)
 
-@app.route("/uploader", methods = ['GET', 'POST'])
-def uploader():
-    if ('user' in session):
-        if (request.method == 'POST'):
-            f= request.files['file1']
-            f.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(f.filename) ))
-            return "Uploaded successfully"
+# @app.route("/uploader", methods = ['GET', 'POST'])
+# def uploader():
+#     if ('user' in session):
+#         if (request.method == 'POST'):
+#             f= request.files['file1']
+#             f.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(f.filename) ))
+#             return "Uploaded successfully"
 
 @app.route("/logout")
 def logout():

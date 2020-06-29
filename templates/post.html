@@ -3,7 +3,7 @@
 
     <!-- Page Header -->
     {% set fname = 'img/' + post.img_file %}
-    <header class="masthead" style="background-image: url('{{ url_for('static', filename=fname) }}')">
+    <header class="masthead mb-0" style="background-image: url('{{ url_for('static', filename=fname) }}')">
       <div class="overlay"></div>
       <div class="container">
         <div class="row">
@@ -12,7 +12,7 @@
               <h1>{{post.title}}</h1>
               <h2 class="subheading">{{post.tagline}}</h2>
               <span class="meta">Posted by
-                <a href="#">Admin</a>
+                <a href="#">{{post.poster}}</a>
                 on {{post.date}}</span>
             </div>
           </div>
@@ -22,7 +22,8 @@
 
     <!-- Post Content -->
     <article>
-      <div class="container">
+       <div class="bg-light py-5">
+    <div class="container bg-white shadow py-5">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
             {{post.content}}
@@ -31,6 +32,7 @@
           </div>
         </div>
       </div>
+    </div>
     </article>
 
    {% endblock %}

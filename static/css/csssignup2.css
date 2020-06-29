@@ -20,7 +20,7 @@ body {
 
 h1 {
 	font-weight: bold;
-	margin: 0;
+	margin: 15px;
 }
 
 h2 {
@@ -57,6 +57,7 @@ button {
 	letter-spacing: 1px;
 	text-transform: uppercase;
 	transition: transform 80ms ease-in;
+	margin-top: 10px;
 }
 
 button:active {
@@ -87,7 +88,7 @@ input {
 	background-color: #eee;
 	border: none;
 	padding: 12px 15px;
-	margin: 8px 0;
+	margin: 15px 0;
 	width: 100%;
 }
 img{
@@ -244,4 +245,82 @@ img{
 	margin: 0 5px;
 	height: 40px;
 	width: 40px;
+}
+
+#hiddensignin, #hiddensignup{
+	display:none;
+}
+@media (max-width:1400px){
+	.container{
+		height:90%;
+		width:70%;
+	}
+	.overlay-container{
+		display:none;
+	}
+	.container.right-panel-active .sign-up-container{
+		
+		transform: translate(0%);
+	}
+	.sign-in-container, .sign-up-container{
+		width:100%;
+	}
+	.sign-in-container{
+		opacity: 0;
+		display: none;
+	}
+	.sign-up-container{
+		opacity:1;
+	}
+	form{
+		padding: 0 25%;
+	}
+	h1{
+		margin-bottom: 3%;
+	}
+	#hiddensignin, #hiddensignup{
+	display:block;
+	}
+	a{
+		color:blue;
+	}
+} 
+@media (max-width:768px){
+	.container{
+		height:60%;
+		width:70%;
+	}
+} 
+
+@media (max-width: 425px){
+	body a{
+		font-size:12px;
+
+	}
+	h1{
+		font-size:24px;
+		margin-bottom: 10%;
+		margin-top:35%;
+	}
+	button{
+        padding: 5px 10px;
+    	font-size: 8px;
+	}
+	.container{
+		height:60%;
+		width:100%;
+	}
+	form{
+		padding:10%;
+	}
+	input{
+		margin:5px 0px;
+		padding: 9px 15px;
+	    font-size: 7px;
+	}
+	p{
+		font-size:11px;
+	}
+} 
+
 }
