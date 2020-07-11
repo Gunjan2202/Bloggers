@@ -20,7 +20,7 @@
 
  <link href="{{url_for('static', filename='css/signin.css')}}" rel="stylesheet">
  
-    <form class="form-signin" action="/dashboard" method="post">
+    <form class="form-signin" action="/dashboard" method="post" data-aos="zoom-in">
       {% set fname = 'img/'+  params['login_image']  %}
       <img class="mb-4" src="{{url_for('static', filename=fname)}}" alt="" width="72" height="72">
       <h1 class="h3 mb-3 font-weight-normal">Admin Login</h1>

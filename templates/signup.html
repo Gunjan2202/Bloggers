@@ -14,11 +14,13 @@
     />
 	
 	<link href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+	<!-- aos library -->  
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 <body>
 
 
-<div class="container" id="container">
+<div class="container" id="container" data-aos="zoom-in">
 	<button class="close" onclick="window.location.href='/'"><i class="fa fa-times" aria-hidden="true"></i></button>
 
 	<!-- 
@@ -71,6 +73,15 @@
 
 
 <script type="text/javascript" src="{{url_for('static', filename='js/jswork.js')}}"></script>
+<!-- Bootstrap core JavaScript -->
+    <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+  
+
+    <!-- Aos library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+    AOS.init();
+    </script>
 
 </body>
 </html>

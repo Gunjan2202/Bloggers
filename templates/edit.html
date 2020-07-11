@@ -6,7 +6,7 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
-            <div class="site-heading">
+            <div class="site-heading" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1000">
               <h1>Admin Panel</h1>
               <span class="subheading">Manage your posts and change them</span>
             </div>
@@ -16,7 +16,7 @@
     </header>
 
     <!-- Main Content -->
-    <div class="bg-light pb-5 pt-5">
+    <div class="bg-light pb-5 pt-5" data-aos="fade-up">
 
     <div class="container bg-white shadow py-5">
       <div class="row">
@@ -26,35 +26,29 @@
 <h1>Add/Edit Post</h1>
 
 
- <form name="sentMessage" id="contactForm" action = "/edit/{{sno}}" method="post" novalidate enctype="multipart/form-data">
+ <form name="sentMessage" id="contactForm" action = "/edit/{{sno}}" method="post" novalidate enctype="multipart/form-data" data-aos="fade-up">
             <div class="control-group">
-              <div class="form-group floating-label-form-group controls">
+              <div class="form-group floating-label-form-group controls" data-aos="fade-left" data-aos-delay="100">
                 <label>Title</label>
                 <input type="text" class="form-control" placeholder="Title" id="title" name='title' required data-validation-required-message="Please enter your name." value="{{post.title}}">
                 <p class="help-block text-danger"></p>
               </div>
             </div>
-            <div class="control-group">
+            <div class="control-group" data-aos="fade-left" data-aos-delay="100">
               <div class="form-group floating-label-form-group controls">
                 <label>Tagline</label>
                 <input type="text" class="form-control" placeholder="Tagline" id="tline" name="tline" required data-validation-required-message="Please enter your email address." value="{{post.tagline}}">
                 <p class="help-block text-danger"></p>
               </div>
             </div>
-            <div class="control-group">
-              <div class="form-group col-xs-12 floating-label-form-group controls">
-                <label>Slug</label>
-                <input type="text" class="form-control" placeholder="Slug" name="slug" id="slug" required data-validation-required-message="Please enter your phone number." value="{{post.slug}}">
-                <p class="help-block text-danger"></p>
-              </div>
-            </div>
-            <div class="control-group">
+            
+            <div class="control-group" data-aos="fade-left" data-aos-delay="200">
               <div class="form-group col-xs-12 floating-label-form-group controls">
                
                 <!-- <input type="text" class="form-control" placeholder="Category" name="category" id="category" required data-validation-required-message="Please enter category." value="{{post.category}}">
                 <p class="help-block text-danger"></p> -->
                     <p class="ptag">Category</p>  
-                    <select class="form-control" placeholder="Category" id="category" required value="{{post.category}}">
+                    <select class="form-control" placeholder="Category" id="category"  value="{{post.category}}" name="category">
                       <option>education</option>
                       <option>environment</option>
                       <option>health</option>
@@ -65,7 +59,7 @@
             </div>
 
 
-            <div class="control-group">
+            <div class="control-group" data-aos="fade-left" data-aos-delay="300">
               <div class="form-group floating-label-form-group controls">
                 <label>content</label>
                 <textarea rows="5" class="form-control" placeholder="Content" name = "content" id="content" required data-validation-required-message="Please enter a message.">{{post.content}}</textarea>
@@ -74,7 +68,7 @@
             </div>
             
 
-            <div class="control-group">
+            <div class="control-group" data-aos="fade-left" data-aos-delay="400">
               <div class="form-group floating-label-form-group controls">
                 <label>Image File</label>
                 <!-- <input class="form-control" placeholder="Image Filename" name = "img_file" id="img_file" value="{{post.img_file}}">

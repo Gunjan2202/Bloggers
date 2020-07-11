@@ -1,12 +1,12 @@
 {% extends "layout.html" %}
 {% block body %}
     <!-- Page Header -->
-    <header class="masthead" style="background-image: url('{{ url_for('static', filename='img/home-bg.jpg') }}')">
+    <header class="masthead mb-0" style="background-image: url('{{ url_for('static', filename='img/home-bg.jpg') }}')">
       <div class="overlay"></div>
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
-            <div class="site-heading">
+            <div class="site-heading" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1000">
               <h1>Welcome {{sname}}</h1>
               <span class="subheading">Manage your posts and change them</span>
             </div>
@@ -16,7 +16,66 @@
     </header>
 
     <!-- Main Content -->
-    <div class="container">
+    
+      
+           
+
+<!-- 
+////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//////////////////////////////////////////////////////////////////////////////////////////// -->
+
+<div class="bg-light py-5">
+      <main>
+
+            <!-- --------------------- Blog Carousel ----------------- -->
+           <div class="text-center mb-3"> <a href="/edit/0">  <button class="btn btn-success rounded "> Add a new post</button></a></div>
+           
+            <h1 class="ml-5">Edit Posts</h1>
+            <hr> 
+           <section class="bag-image">
+
+            <div class="blog">
+              
+                <!-- <div class="container"> -->
+                 
+                    <div class="owl-carousel owl-theme blog-post">
+                      
+                      {% for post in posts %} 
+                      {% set fname = 'uploaded/'+  post.img_file  %}
+                      <a href="/post/{{post.slug}}">
+                        <div class="blog-content dashboard-content" data-aos="fade-left" data-aos-delay="200">
+                            <img src="{{ url_for('static', filename=fname) }}" alt="post-1" class="img-fluid">
+                            <div class="blog-title">
+                                <h3>{{ post.title }}</h3>
+                                <span><a href="/delete/{{post.sno}}"><i class="fas fa-trash"></i></a></span>
+
+                               <span><a href="/edit/{{post.sno}}"><i class="fas fa-edit"></i></a></span>
+                            </div>
+                        </div>
+                      </a>
+                      {% endfor %}
+                      
+                    </div>
+
+                     
+                </div>
+            </div>
+        </section>
+      </main>
+        <!-- ----------x---------- Blog Carousel --------x-------- -->
+      
+
+
+
+
+
+
+
+
+
+    <!-- <div class="container" data-aos="fade-up">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           
@@ -25,15 +84,15 @@
            
 
           <hr>
-<h1>Edit Posts</h1>
-<table class="table">
+<h1>Edit Posts</h1> -->
+<!-- <table class="table">
     <thead>
       <tr>
-        <th>Sno</th>
-        <th>Title</th>
-        <th >Date</th>
-        <th >Edit</th>
-        <th>Delete</th>
+        <th scope="col">Sno</th>
+        <th scope="col">Title</th>
+        <th scope="col">Date</th>
+        <th scope="col" >Edit</th>
+        <th scope="col">Delete</th>
       </tr>
     </thead>
     <tbody>
@@ -57,10 +116,10 @@
 
     </tbody>
   </table>
+ -->
 
-
-      
+      <!-- 
         </div>
       </div>
-    </div>
+    </div> -->
     {% endblock %}

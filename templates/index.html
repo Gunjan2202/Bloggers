@@ -1,13 +1,13 @@
 {% extends "layout.html" %}
 {% block body %}
     <!-- Page Header -->
-    <header class="masthead mb-0" style="background-image: url('{{ url_for('static', filename='img/homepage.jpeg') }}')">
+    <header class="masthead mb-0"  style="background-image: url('{{ url_for('static', filename='img/homepage.jpeg') }}')">
       <div class="overlay"></div>
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
             
-            <div class="site-heading">
+            <div class="site-heading" data-aos="flip-left" data-aos-delay="100" data-aos-duration="1000">
               <h1>{{params['blog_name']}}</h1>
               <span class="subheading "><strong>{{params['tag_line']}}</strong></span>
             </div>
@@ -19,15 +19,48 @@
     <!-- Main Content -->
     <div class="addpost"><a href="/dashboard"><i class="fas fa-plus-circle"></i></a></div>
     <div class="bg-light py-5">
+      <main>
+
+            <!-- --------------------- Blog Carousel ----------------- -->
+            
+           <section class="bag-image">
+            <div class="blog">
+              
+                <!-- <div class="container"> -->
+                 
+                    <div class="owl-carousel owl-theme blog-post">
+                      
+                      {% for post in posts %} 
+                      {% set fname = 'uploaded/'+  post.img_file  %}
+                      <a href="/post/{{post.slug}}">
+                        <div class="blog-content" data-aos="fade-left" data-aos-delay="200">
+                            <img src="{{ url_for('static', filename=fname) }}" alt="post-1" class="image-owl">
+                            <div class="blog-title">
+                                <h3>{{ post.title }}</h3>
+                                <button class="btn btn-blog">{{ post.category }}</button>
+                                <span>Posted by {{post.poster}}</span>
+                            </div>
+                        </div>
+                      </a>
+                      {% endfor %}
+                      
+                    </div>
+
+                     
+                </div>
+            </div>
+        </section>
+      </main>
+        <!-- ----------x---------- Blog Carousel --------x-------- -->
+      
     <div class="container bg-white shadow py-5">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
 
-
      <!-- Todo: Fetch it using for loop from the database -->
 
      {% for post in posts %}    
-          <div class="post-preview mb-3">
+          <div class="post-preview mb-3" data-aos="fade-up">
             
             <a href="/post/{{post.slug}}">
               <h2 class="post-title">{{ post.title }}
@@ -38,16 +71,17 @@
                 {{post.tagline}}
               </h3>
               {% set fname = 'uploaded/'+  post.img_file  %}
-              <img src="{{ url_for('static', filename=fname) }}" class="img-fluid">
+              <div class="overflow-hidden" data-aos="zoom-in"><img src="{{ url_for('static', filename=fname) }}" class="img-fluid div-image"></div>
             
             <p class="post-meta">Posted by
               <a href="#">{{post.poster}}</a>
               on {{post.date}}</p>
 
-          </div>
+          
 
           {{post.content[0:243]}}...
         </a>
+        </div>
           <hr class="mb-5">
 
           {% endfor %}
@@ -55,8 +89,8 @@
 
           <!-- Pager -->
           <div class="clearfix">
-            <a class="btn btn-success rounded float-left" href="{{prev}}"> &larr;Previous</a>
-            <a class="btn btn-success rounded float-right" href="{{next}}">Next &rarr;</a>
+            <a class="btn btn-success rounded float-left" href="{{prev}} " data-aos="zoom-in-right"> &larr;Previous</a>
+            <a class="btn btn-success rounded float-right" href="{{next}}" data-aos="zoom-in-left">Next &rarr;</a>
           </div>
         </div>
       </div>

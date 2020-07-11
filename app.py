@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, session, redirect
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
 # from flask_mail import Mail
 import json
 import os
@@ -99,6 +100,9 @@ def home():
 def template(varstring):
     posts = Posts.query.filter_by(category=varstring).all()
     last = math.ceil(len(posts)/int(params['no_of_posts']))
+    blogname=""
+    tag=""
+    image=""
     #[0: params['no_of_posts']]
     #posts = posts[]
     page = request.args.get('page')
@@ -187,7 +191,8 @@ def signup2():
     	semail = request.form.get('semail')
     	sname = request.form.get('sname')
     	spass = request.form.get('spass')
-    	users = Users(email=semail, name=sname, password=spass)
+    	hashedpass=generate_password_hash(spass)
+    	users = Users(email=semail, name=sname, password=hashedpass)
     	db.session.add(users)
     	db.session.commit()
     	session['user'] = sname
@@ -206,9 +211,10 @@ def dashboard():
 		useremail = request.form.get('uemail')
 		userpass = request.form.get('pass')
 		db=Users.query.filter_by(email=useremail).first()
-		dbpass=db.password
+		dbpass=check_password_hash(db.password,userpass)
+
 		dbuseremail=db.email
-		if (useremail == dbuseremail and userpass == dbpass):
+		if (useremail == dbuseremail and dbpass==True):
 			#set the session variable
 			username=db.name
 			session['user'] = username
@@ -217,7 +223,7 @@ def dashboard():
 			url="logout"
 			return render_template('dashboard.html', params=params, posts = posts, sname=username,var=var,url=url)
 		else:
-			return "wrong"
+			return dbpass
 	if ('user' in session):
 		posts = Posts.query.filter_by(poster=session['user']).all()
 		username=session['user']
@@ -233,7 +239,7 @@ def edit(sno):
         if request.method == 'POST':
             box_title = request.form.get('title')
             tline = request.form.get('tline')
-            slug = request.form.get('slug')
+            slug = box_title
             content = request.form.get('content')
             img_file = request.files.get('img_file')
             img_file.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(img_file.filename) ))
@@ -245,10 +251,11 @@ def edit(sno):
                 post = Posts(title=box_title, slug=slug, content=content, tagline=tline, img_file=secure_filename(img_file.filename), date=date, category=category,poster=poster)
                 db.session.add(post)
                 db.session.commit()
+                return redirect('/dashboard')
             else:
                 post = Posts.query.filter_by(sno=sno).first()
                 post.title = box_title
-                post.slug = slug
+                post.slug = box_title
                 post.content = content
                 post.tagline = tline
                 post.img_file = secure_filename(img_file.filename)
@@ -270,7 +277,7 @@ def delete(sno):
         db.session.commit()
         var = "logout"
         url="logout"
-    return redirect('/dashboard',var=var,url=url)
+    return redirect('/dashboard')
 
 # @app.route("/uploader", methods = ['GET', 'POST'])
 # def uploader():
