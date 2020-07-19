@@ -1,0 +1,94 @@
+(function ($) {
+
+  // "Disable inline css for non-active form.
+  Drupal.behaviors.cssDisable = {
+    attach: function (context, settings) {
+      if($(".marketo-form-display").length < 1) {
+        return;
+      }
+      // Hit API endpoint to get json data. If there are multiple Market form
+      // sets on the page, this will change them all.
+      var geoCode;
+      $.ajax({
+        type: 'GET',
+        url: '/crp-geoip2/country-code/external?key=oPsrhNvspud)9v32Rcj26FiK?8HRXQ',
+        async: false,
+        contentType: "application/json",
+        success: function (data) {
+          geoCode = data['isoCode'];
+        },
+        // On error try to use the non-US form to be safe.
+        error: function (data) {
+          geoCode = 'OTH';
+        },
+        complete: function (data) {
+          // If form with geoCode doesn't exist, try OTH.
+          if (!$(".marketo-form-display:[data-geocode='" + geoCode + "']").length) {
+            geoCode = 'OTH';
+          }
+
+          // If form for OTH doesn't exist, try the first form found.
+          if (!$(".marketo-form-display:[data-geocode='" + geoCode + "']").length) {
+            geoCode = $(".marketo-form-display").eq(0).data('geoCode');
+          }
+
+          // Override for Puerto Rico
+          if (geoCode == 'PR') {
+            geoCode = 'US';
+          }
+
+          // Switch the forms. This accommodates multiple form sets.
+          if (geoCode.length) {
+            $(".marketo-form-switch:[data-switch-geocode='" + geoCode + "']").each(function(){
+              mFormSwitch($(this));
+            })
+
+            // We can always switch all css for hidden or visible forms.
+            mCssSwitch();
+          }
+        }
+      });
+    }
+  };
+
+  // Click handler to show/hide another form.
+  Drupal.behaviors.formSwitch = {
+    attach: function (context, settings) {
+
+      $('.marketo-form-switch').click(function () {
+
+        // Send the clicked object so only that form set will be affected.
+        mFormSwitch($(this));
+        mCssSwitch();
+        return false;
+      });
+    }
+  };
+
+  // Applies or removes any style tags from all the forms.
+  // We can always switch all css for hidden or visible forms.
+  function mCssSwitch() {
+    // type=hidden is made up. css won't be loaded by the browser.
+    $('.mcss-none style').attr('type', 'hidden');
+    $('.mcss-block style').attr('type', 'text/css');
+
+  }
+
+  // Handles showing/hiding form and switches by geoCode, withing the wrapper.
+  function mFormSwitch(clickedSwitch) {
+    // Grab the parent set wrapper.
+    var wrapper = clickedSwitch.parents('.marketo-form-wrapper');
+
+    // Grab the geocode from the clicked switch
+    geoCode = clickedSwitch.data('switch-geocode');
+
+    // On the switch, the data-switch-geocode is the form to switch to when clicked.
+    wrapper.find($(".marketo-form-switch:not([data-switch-geocode='" + geoCode + "'])")).show();
+    wrapper.find($(".marketo-form-switch:[data-switch-geocode='" + geoCode + "']")).hide();
+
+    // On the form, the data-geocode is the geoCode for which the form is displayed.
+    wrapper.find($(".marketo-form-display:not([data-geocode='" + geoCode + "'])")).hide().removeClass('mcss-block').addClass('mcss-none');
+    wrapper.find($(".marketo-form-display:[data-geocode='" + geoCode + "']")).show().removeClass('mcss-none').addClass('mcss-block');
+  }
+
+})(jQuery);

@@ -114,13 +114,13 @@ def template(varstring):
     #First
     if (page==1):
         prev = "#"
-        next = "/?page="+ str(page+1)
+        next = "/"+varstring+"?page="+ str(page+1)
     elif(page==last):
-        prev = "/?page=" + str(page - 1)
+        prev = "/"+varstring+"?page=" + str(page - 1)
         next = "#"
     else:
-        prev = "/?page=" + str(page - 1)
-        next = "/?page=" + str(page + 1)
+        prev = "/"+varstring+"?page=" + str(page - 1)
+        next = "/"+varstring+"?page=" + str(page + 1)
 
     if ('user' in session):
         var = "logout"

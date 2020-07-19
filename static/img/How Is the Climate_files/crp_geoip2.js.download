@@ -1,0 +1,42 @@
+function getIsoCode() {
+  return $.ajax({
+    type: 'GET',
+    url: '/crp-geoip2/country-code',
+    contentType: "application/json",
+  });
+}
+
+/*jQuery(document).ready(function(){
+  getIsoCode().success(function (data) {
+    // Debugging only, comment out
+    console.log(data);
+    // Add your checkbox conditions here.
+    if (data == 'US' || data == 'AUS') {
+       $('#10').prop('checked', true);
+    }
+  });
+  function getIsoCode() {
+    return $.ajax({
+      type: 'GET',
+      url: '/crp-geoip2/country-code',
+      contentType: "application/json",
+    });
+  }
+});*/
+
+//var promise = getIsoCode();
+/*getIsoCode().success(function (data) {
+  console.log(data);
+});*/
+
+
+/*$(document).ready(function() {
+ getIsoCode().success(function (data) {
+   // Debugging only, comment out
+   console.log(data);
+   // Add your checkbox conditions here.
+   if (data == 'US' || data == 'AUS') {
+     $('#10').prop('checked', true);
+   }
+ });
+});*/

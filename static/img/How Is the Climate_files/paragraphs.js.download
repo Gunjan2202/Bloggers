@@ -1,0 +1,210 @@
+/**
+ * @file
+ * A JavaScript file for paragraphs.
+ */
+
+// JavaScript should be made compatible with libraries other than jQuery by
+// wrapping it with an "anonymous closure". See:
+// - https://drupal.org/node/1446420
+// - http://www.adequatelygood.com/2010/3/JavaScript-Module-Pattern-In-Depth
+(function ($, Drupal, window, document, undefined) {
+
+  // To understand behaviors, see https://drupal.org/node/756722#behaviors
+  Drupal.behaviors.paragraphSlider = {
+    attach: function(context, settings) {
+      $('.paragraph--slider .flexslider').flexslider({
+        animation: "slide",
+        animationLoop: true,
+        controlNav: false,
+        itemWidth: 210,
+        minItems: 2,
+        maxItems: 4,
+        slideshow: false,
+        start: function(slider) {
+          $.flexloader(slider);
+        },
+        after: function(slider) {
+          $.flexloader(slider);
+        }
+      });
+
+      $('.paragraph--slider').each(function() {
+        var style = $(this).find('.slider--title-background').attr('style');
+        $(this).find('.flex-direction-nav a').attr('style', style);
+      })
+    }
+  };
+
+  // CC Advanced Hero
+  Drupal.behaviors.cc__advanced_hero = {
+    attach: function (context, settings) {
+      $(document).ready(function(){
+        // Set original youtube source to data attr for retrevial later
+  		  $('.cc-advanced-hero').each(function(index) {
+      		var video_iframe = $(this).find('iframe');
+      		var video_iframe_src = video_iframe[0].src;
+      		$(this).attr('data-youtube', video_iframe_src);
+        });
+
+  		  // Click function
+  		  $('.cc-advanced-hero .overlay-content--top').click(function(){
+          var cc_advanced_hero_container = $(this).closest('.cc-advanced-hero');
+
+          $('.cc-advanced-hero--video-wrapper').show();
+
+    		  // Set correct class for current video, remove classes, etc.
+          $(cc_advanced_hero_container).addClass('video-playing');
+
+          //
+          $('.cc-advanced-hero-header').show();
+
+    		  // Find all other youtube videos, so we can reset their state
+    		  $('.cc-advanced-hero').each(function(index) {
+      		  // Find all youtube videos that are not the current video that should be playing.
+      		  if (!$(this).hasClass('active')) {
+        		  // Reset iframe to original state
+        		  var video_iframe = $(this).find('iframe');
+        		  $(this).removeClass('hide');
+        		  video_iframe.css({"display":"none"});
+        		  video_iframe[0].src = $(this).data('youtube');
+        		}
+      		});
+
+    		  // Active video, start playing and hide overlay
+          var video_iframe = $(cc_advanced_hero_container).find('iframe');
+          //video_iframe.css({"opacity":"1","display":"block"}).fadeIn(800, 1,'swing');
+          video_iframe.fadeTo(1200, 1,'swing');
+          //video_iframe.fadeIn('fast');
+          video_iframe[0].src += "&autoplay=1";
+  			  //$(this).unbind("click");
+  	 		});
+
+        // Close video, go back to overlay.
+        $('.cc-advanced-hero-close').click(function(e){
+          e.preventDefault();
+
+          // Hide advanced hero header.
+          $('.cc-advanced-hero-header').hide();
+
+          var video_iframe = $('.cc-advanced-hero').find('iframe');
+
+          //$(this).removeClass('hide');
+          video_iframe.css({"display":"none"});
+          video_iframe[0].src = $(this).data('youtube');
+
+          // Hide video
+          $('.cc-advanced-hero--video-wrapper').hide();
+
+          $('.cc-advanced-hero').removeClass('video-playing');
+
+          // Show overlay
+          $('.cc-advanced-hero .overlay-content').show();
+        });
+
+  	  });
+    }
+  };
+
+  // Advanced hero cards match height
+  // CTA Modal
+  Drupal.behaviors.cc__advanced_hero__cards_match_height = {
+    attach: function(context, settings) {
+      $(function() {
+        $('.action-cards-desktop ul.action-cards--items li .action-card .action-card--top').matchHeight();
+      });
+    }
+  };
+
+  // CTA Modal
+  Drupal.behaviors.cc_cta__modal = {
+    attach: function(context, settings) {
+      $('.cta-modal-trigger').click(function(e){
+        e.preventDefault();
+        var blockId = $(this).data('blockid');
+        // Scroll to top
+        $("html, body").animate({ scrollTop: 0 }, "slow");
+        // Show modal
+        $('#' + blockId).show();
+      });
+
+      // Close modal
+      $('.cc-cta--modal-close, .cc-cta--modal-small-close').click(function(e){
+        e.preventDefault();
+        $('.cta-modal').hide();
+      });
+
+    }
+  };
+
+  //
+  Drupal.behaviors.cc_slider_expanded = {
+    attach: function(context, settings) {
+      var browser_width = $(document).width();
+
+      if (browser_width > 400) {
+        $('.paragraph--slider.has-expanded .paragraph--slider-item').click(function(e){
+          e.preventDefault();
+
+          // Show expanded
+          $('.slide-item-expanded').show();
+
+          // Hide slider
+          var slider_wrapper = $(this).closest('.paragraph--slider-wrapper');
+          $(slider_wrapper).hide();
+
+          var slider_item_expanded_data = $(this).find('.slider-item-expanded-data');
+
+          // Replace image
+          var slider_item_image = $(slider_item_expanded_data).data('cc-slider-image');
+          $('.slide-item-exapnded-img').css('background-image', 'url(' + slider_item_image + ')');
+
+          // Replace title
+          var slider_item_title = $(slider_item_expanded_data).data('cc-slider-title');
+          $('.slide-item-expanded .content-right-wrapper h3').text(slider_item_title);
+
+          // Replace subtitle
+          var slider_item_subtitle = $(slider_item_expanded_data).data('cc-slider-subtitle');
+          $('.slide-item-expanded .content-right-wrapper .subtitle').text(slider_item_subtitle);
+
+          // Replace Appeal copy
+          var slider_item_appeal_copy = $(slider_item_expanded_data).data('cc-slider-appealcopy');
+          $('.slide-item-expanded .content-right-wrapper .appeal-copy').text(slider_item_appeal_copy);
+
+          //var slider_expanded_height = $('.slide-item-expanded').height();
+          //$('.paragraph--slider').height(slider_expanded_height + 100);
+        });
+
+        // Close expanded
+        $('.slide-item-expanded-close').click(function(e){
+          e.preventDefault();
+          $('.slide-item-expanded').hide();
+          $('.paragraph--slider-wrapper').show();
+        });
+      }
+
+    }
+  };
+
+
+  // 24 Hours Menu Scroll
+  Drupal.behaviors.crp_24__menu_scroll = {
+    attach: function(context, settings) {
+
+      $(".menu-name-menu-24-hours-2016 ul li a.same-page-scroll").click(function(e) {
+        // Prevent default behavior of browser to goto element.
+        e.preventDefault();
+
+        //console.log('clicked!' );
+
+        var component_id = '#' + $(this).attr('href').split('#')[1];
+        //console.log(component_id);
+        // Scroll to this item.
+        $('html, body').animate({
+          scrollTop: $(component_id).offset().top
+        }, 500);
+      });
+
+    }
+  };
+
+})(jQuery, Drupal, this, this.document);

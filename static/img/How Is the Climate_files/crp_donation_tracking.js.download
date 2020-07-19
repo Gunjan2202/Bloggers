@@ -1,0 +1,129 @@
+(function ($, Drupal) {
+  // Save tracking data to sessionStorage
+  Drupal.behaviors.crp_donation_tracking__sessionStorage = {
+    attach: function (context, settings) {
+      // CPN Don't need, coming from node form.
+      //var crp_dt_cpn = getParameterByName('cpn');
+      //
+      //// If source code on URL, then record it in session
+      //if (crp_dt_cpn !== undefined) {
+      //  sessionStorage.setItem('crp_dt_cpn', crp_dt_cpn);
+      //}
+      //
+      //// If somehow the session var got recorded as 'undefined', remove it.
+      //else if (sessionStorage.getItem('crp_dt_cpn') === 'undefined') {
+      //	sessionStorage.removeItem('crp_dt_cpn');
+      //}
+
+      if (typeof localStorage === 'object') {
+        try {
+          localStorage.setItem('localStorage', 1);
+          localStorage.removeItem('localStorage');
+        }
+        catch (e) {
+          Storage.prototype._setItem = Storage.prototype.setItem;
+          Storage.prototype.setItem = function() {};
+          //alert('Your web browser does not support storing settings locally. In Safari, the most common cause of this is using "Private Browsing Mode". Some settings may not save or some features may not work properly for you.');
+        }
+      }
+
+      // SRC
+      var crp_dt_src = getParameterByName('utm_source');
+
+			// If source code on URL, then record it in session
+			if (crp_dt_src !== undefined) {
+        sessionStorage.setItem('crp_dt_src', crp_dt_src);
+      }
+
+      // If somehow the session var got recorded as 'undefined', remove it.
+      else if (sessionStorage.getItem('crp_dt_src') === 'undefined') {
+      	sessionStorage.removeItem('crp_dt_src');
+      }
+
+      // Medium
+      var crp_dt_medium = getParameterByName('utm_medium');
+
+			// If source code on URL, then record it in session
+			if (crp_dt_medium !== undefined) {
+        sessionStorage.setItem('crp_dt_medium', crp_dt_medium);
+      }
+
+      // If somehow the session var got recorded as 'undefined', remove it.
+      else if (sessionStorage.getItem('crp_dt_medium') === 'undefined') {
+      	sessionStorage.removeItem('crp_dt_medium');
+      }
+
+      // Variant
+      var crp_dt_variant = getParameterByName('segment');
+
+      // If source code on URL, then record it in session
+      if (crp_dt_variant !== undefined) {
+        sessionStorage.setItem('crp_dt_variant', crp_dt_variant);
+      }
+
+      // If somehow the session var got recorded as 'undefined', remove it.
+      else if (sessionStorage.getItem('crp_dt_variant') === 'undefined') {
+        sessionStorage.removeItem('crp_dt_variant');
+      }
+
+    }
+  };
+
+  // Add sessionStorage to hidden elements on form.
+  Drupal.behaviors.crp_donation_tracking__add_to_form = {
+    attach: function (context, settings) {
+      //// Don't need, coming from node form. CPN Check if form element exists
+      //if ($('#cgc_donation__tracking_cpn').length) {
+      //  var cpn = 0;
+      //  // Get cpn from sessionStorage,
+      //  if (cpn = sessionStorage.getItem('crp_dt_cpn')) {
+      //    //console.log(cpn);
+      //    $('#cgc_donation__tracking_cpn').val(cpn);
+      //  }
+      //}
+
+      // SRC Check if form element exists
+      if ($('#cgc_donation__tracking_src').length) {
+        var src = 0;
+        // Get cpn from sessionStorage,
+        if (src = sessionStorage.getItem('crp_dt_src')) {
+          //console.log(cpn);
+          $('#cgc_donation__tracking_src').val(src);
+        }
+      }
+
+      // MEDIUM Check if form element exists
+      if ($('#cgc_donation__tracking_medium').length) {
+        var medium = 0;
+        // Get cpn from sessionStorage,
+        if (medium = sessionStorage.getItem('crp_dt_medium')) {
+          //console.log(cpn);
+          $('#cgc_donation__tracking_medium').val(medium);
+          //console.log($('#cgc_donation__tracking_medium').val());
+        }
+      }
+
+      // VARIANT Check if form element exists
+      if ($('#cgc_donation__tracking_variant').length) {
+        var crp_dt_variant = 0;
+        // Get cpn from sessionStorage,
+        if (crp_dt_variant = sessionStorage.getItem('crp_dt_variant')) {
+          $('#cgc_donation__tracking_variant').val(crp_dt_variant);
+        }
+      }
+
+    }
+  };
+
+  // Helper function to get query parameters.
+  function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  }
+
+})(jQuery, Drupal);

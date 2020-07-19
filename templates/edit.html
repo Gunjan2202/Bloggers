@@ -42,13 +42,13 @@
               </div>
             </div>
             
-            <div class="control-group" data-aos="fade-left" data-aos-delay="200">
+            <div class="control-group " data-aos="fade-left" data-aos-delay="200">
               <div class="form-group col-xs-12 floating-label-form-group controls">
                
                 <!-- <input type="text" class="form-control" placeholder="Category" name="category" id="category" required data-validation-required-message="Please enter category." value="{{post.category}}">
                 <p class="help-block text-danger"></p> -->
                     <p class="ptag">Category</p>  
-                    <select class="form-control" placeholder="Category" id="category"  value="{{post.category}}" name="category">
+                    <select class="form-control mb-3" placeholder="Category" id="category"  value="{{post.category}}" name="category">
                       <option>education</option>
                       <option>environment</option>
                       <option>health</option>
@@ -57,6 +57,7 @@
                     </select>
               </div>
             </div>
+            
 
 
             <div class="control-group" data-aos="fade-left" data-aos-delay="300">
@@ -69,7 +70,7 @@
             
 
             <div class="control-group" data-aos="fade-left" data-aos-delay="400">
-              <div class="form-group floating-label-form-group controls">
+              <div class="form-group floating-label-form-group controls" required>
                 <label>Image File</label>
                 <!-- <input class="form-control" placeholder="Image Filename" name = "img_file" id="img_file" value="{{post.img_file}}">
                 <p class="help-block text-danger"></p> -->

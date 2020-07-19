@@ -29,8 +29,17 @@ footer{
 .width20{
 	width:20%;
 }
-.ptag p{
-	font-size: 1.5em;
+.ptag{
+    font-family: Lora,'Times New Roman',serif;
+    color: grey;
+    font-size: 1.3rem;
+    
+}
+#category{
+    font-family: Lora,'Times New Roman',serif;
+    color: grey;
+    
+    
 }
 .div-image{
 	transition: all 1s ease;
